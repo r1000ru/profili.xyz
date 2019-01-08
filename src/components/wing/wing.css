@@ -1,0 +1,4 @@
+.wing {
+    display: flex;
+    flex-direction: column;
+}

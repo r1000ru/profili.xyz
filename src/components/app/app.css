@@ -1,0 +1,11 @@
+.app {
+    height: 100vh;
+    display: flex;
+}
+.app__wing {
+    width: 400px;
+}
+
+.app__xyz {
+    flex: 1;
+}
