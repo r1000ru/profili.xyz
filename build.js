@@ -13,7 +13,7 @@ var buildPath = './www';
 var namespace = 'window.profili = window.profili || {}; window.profili.html'
 
 // Строки с названиями дополнительных файлов, которые необходимо скопировать
-var addition = []; 
+var addition = [];
 
 var appCSS = '';
 var appJS = '';
@@ -32,11 +32,11 @@ var makeBuildDir = function() {
 var clearDirRecursive = function(path) {
     try {
         let stat = fs.lstatSync(path)
-    } catch(e) {
+    } catch (e) {
         return;
     }
-    
-    fs.readdirSync(path).forEach(function(item, index){
+
+    fs.readdirSync(path).forEach(function(item, index) {
         let stat = fs.lstatSync(path + '/' + item);
         if (stat.isFile()) {
             fs.unlinkSync(path + '/' + item);
@@ -59,33 +59,33 @@ var build = function() {
         files.forEach(file => {
             console.log('Обрабатывается: ' + file);
             try {
-                appCSS += fs.readFileSync(appPath + '/' +file + '/' + file + '.css').toString();
-            } catch(e) {
-                console.log('Не обнаружено: ' + appPath + '/' +file + '/' + file + '.css');
+                appCSS += fs.readFileSync(appPath + '/' + file + '/' + file + '.css').toString();
+            } catch (e) {
+                console.log('Не обнаружено: ' + appPath + '/' + file + '/' + file + '.css');
             }
             try {
                 appJS += fs.readFileSync(appPath + '/' + file + '/' + file + '.js') + ';';
-            } catch(e) {
+            } catch (e) {
                 console.log('Не обнаружено: ' + appPath + '/' + file + '/' + file + '.js');
             }
-    
+
             try {
                 appTemplates[file] = fs.readFileSync(appPath + '/' + file + '/' + file + '.html').toString();;
-            } catch(e) {
+            } catch (e) {
                 console.log('Не обнаружено: ' + appPath + '/' + file + '/' + file + '.html');
             }
 
             try {
-                let assets = fs.readdirSync(appPath + '/' +file + '/assets');
+                let assets = fs.readdirSync(appPath + '/' + file + '/assets');
                 console.log('Копируем ASSETS: ' + appPath + '/' + file + '/assets');
-                assets.forEach(asset=>{
-                    fs.copyFileSync(appPath + '/' +file + '/assets/' + asset, buildPath + '/assets/' + asset);
+                assets.forEach(asset => {
+                    fs.copyFileSync(appPath + '/' + file + '/assets/' + asset, buildPath + '/assets/' + asset);
                 })
-            } catch {
+            } catch (e) {
                 console.log('Не обнаружено папки ASSETS: ' + appPath + '/' + file + '/assets');
             }
         });
-    
+
         fs.writeFileSync(buildPath + '/app-' + version + '.css', appCSS);
         fs.writeFileSync(buildPath + '/app-' + version + '.js', appJS);
         var templatesJS = `(function() { ${namespace}  = ${JSON.stringify(appTemplates)};})();`;
@@ -100,21 +100,21 @@ var build = function() {
         files.forEach(file => {
             console.log('Обрабатывается: ' + file);
             try {
-                vendorCSS += fs.readFileSync(vendorPath + '/' +file + '/' + file + '.css').toString() 
-            } catch(e) {
-                console.log('Не обнаружено: ' + vendorPath + '/' +file + '/' + file + '.css');
+                vendorCSS += fs.readFileSync(vendorPath + '/' + file + '/' + file + '.css').toString()
+            } catch (e) {
+                console.log('Не обнаружено: ' + vendorPath + '/' + file + '/' + file + '.css');
             }
             try {
                 vendorJS += fs.readFileSync(vendorPath + '/' + file + '/' + file + '.js').toString() + ';';
-            } catch(e) {
+            } catch (e) {
                 console.log('Не обнаружено: ' + vendorPath + '/' + file + '/' + file + '.js');
             }
-            
+
         });
-    
+
         fs.writeFileSync(buildPath + '/vendors-' + version + '.css', vendorCSS);
         fs.writeFileSync(buildPath + '/vendors-' + version + '.js', vendorJS);
-        
+
     });
 
 
